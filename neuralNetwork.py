@@ -10,7 +10,7 @@ class Neuron:
         self.bias = 0 #random.random() #Neuron bias value
         self.value = 0
     
-    def calculate(self):
+    def activate(self):
         self.value = sigmoid(self.value)
     
     def popValue(self):
@@ -25,13 +25,13 @@ class Synapse:
     def __init__(self, leftNeuron, rightNeuron):
         self.leftNeuron = leftNeuron
         self.rightNeuron = rightNeuron
-        self.weight = 1#random.random() #random weight bewteen 0 and 1
+        self.weight = random.random() #random weight bewteen 0 and 1
     
     def fire(self):
         self.rightNeuron.value += (self.leftNeuron.value * self.weight) #+ self.rightNeuron.bias
 
     def __str__(self):
-        return "l neuron value:\t" + str(self.leftNeuron.value)+"\tr neuron value:\t"+str(self.rightNeuron.value)
+        return "l neuron value:" , '\t' + str(self.leftNeuron.value)+ '\t', "r neuron value:", '\t' + str(self.rightNeuron.value)
 
 
 class NeuralNetwork:
@@ -57,11 +57,16 @@ class NeuralNetwork:
             for j in range(len(self.hiddenLayer)):
                 synapse = Synapse(self.hiddenLayer[j], neuron)
                 self.outputLayerSynapses.append(synapse)
-
+    
+    def clearNeurons(self):
+        for neuron in self.hiddenLayer:
+            neuron.setValue(0)
+        for neuron in self.outputLayer:
+            neuron.setValue(0)
 
     def fireNetwork(self, inputList):
         if len(inputList) != len(self.inputLayer):
-            error("you cant do that")
+            raise ValueError("Number of inputs did not match number of inputs on neural network.")
 
         for i in range(len(inputList)):
             self.inputLayer[i].setValue(inputList[i])
@@ -70,26 +75,25 @@ class NeuralNetwork:
             synapse.fire()
 
         for neuron in self.hiddenLayer:
-            neuron.calculate()
+            neuron.activate()
 
         for synapse in self.outputLayerSynapses:
             synapse.fire()
 
         for neuron in self.outputLayer:
-            neuron.calculate()
+            neuron.activate()
+        output = []
+        for neuron in self.outputLayer:
+            output.append(neuron.value)
+        #self.clearNeurons()
+        return output
 
     def printSynapses(self):
         counter = 0
         for synapse in self.hiddenLayerSynapses:
-            print (counter, " ", synapse)
+            print (counter, " ", synapse.__str__())
             counter += 1
         for synapse in self.outputLayerSynapses:
-            print (counter, " ", synapse)
+            print (counter, " ", synapse.__str__())
             counter += 1
-
-network = NeuralNetwork(2,1)
-network.fireNetwork([100, 100])
-x1 = sigmoid(100*1 + 100*1)
-x2 = sigmoid(100*1 + 100*1)
-print(sigmoid(2))
-network.printSynapses()
+print(sigmoid(0))

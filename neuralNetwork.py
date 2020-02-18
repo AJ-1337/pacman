@@ -7,36 +7,26 @@ def sigmoid(x):
 
 class Neuron:
     def __init__(self): 
-        self.synapses = {} #Holds references to other neurons to the left, plus weights
-        self.bias = 1 #random.random() #Neuron bias value
+        self.bias = 0 #random.random() #Neuron bias value
         self.value = 0
     
     def calculate(self):
-        self.value = 0
-        for neuron, weight in self.synapses.items():
-            self.value += weight * neuron.value
-        self.value = sigmoid(value)
+        return sigmoid(value)
     
-    def getValue(self):
-        return self.value
+    def popValue(self):
+        x = self.value
+        self.value = 0
+        return x
     
     def setValue(self, value):
         self.value = value
 
-class NeuralNetwork:
-    def __init__(self, numInputs, numHiddenLayers, numOutputs):
-        self.layers = {}
-        for i in range(2 + numHiddenLayers):
-            self.layers[i] = {}
-        
-        for i in range(numInputs): #Creates all the input neurons.
-            self.layers[0][i] = Neuron()
-        
-        for layer in range(numHiddenLayers):
-            for i in range(numInputs):
-                neuron = Neuron()
-                self.layers[layer + 1][i] = neuron
-                for neuron in self.layers[layer - 1]:
-                    neuron.synapses[neuron] = random.random()
+class Synapse:
+    def __init__(self, leftNeuron, rightNeuron):
+        self.leftNeuron = leftNeuron
+        self.rightNeuron = rightNeuron
+        self.weight = random.random()
+    
+    def fire(self):
+        self.rightNeuron.value += (self.leftNeuron.value * self.weight) #+ self.rightNeuron.bias
 
-n = NeuralNetwork(1,1,1)

@@ -30,3 +30,15 @@ class Synapse:
     def fire(self):
         self.rightNeuron.value += (self.leftNeuron.value * self.weight) #+ self.rightNeuron.bias
 
+class NeuralNetwork:
+    def __init__(self, numInputs, numOutputs):
+        self.layers = {}
+        for layer in range(2):
+            self.layers[layer] = {}
+            for i in range(numInputs):
+                neuron = Neuron()
+                self.layers[layer][i] = neuron
+        for layer in range(2):
+            
+            
+        

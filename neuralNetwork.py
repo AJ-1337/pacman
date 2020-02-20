@@ -25,7 +25,7 @@ class Synapse:
     def __init__(self, leftNeuron, rightNeuron):
         self.leftNeuron = leftNeuron
         self.rightNeuron = rightNeuron
-        self.weight = random.random() #random weight bewteen 0 and 1
+        self.weight = random.uniform(0, 0.3) #random weight bewteen 0 and 1
     
     def fire(self):
         self.rightNeuron.value += (self.leftNeuron.value * self.weight) #+ self.rightNeuron.bias

@@ -1,5 +1,6 @@
 import random
 import math
+import numpy
 e = 2.718
 
 def sigmoid(x):
@@ -7,7 +8,7 @@ def sigmoid(x):
 
 class Neuron:
     def __init__(self): 
-        self.bias = 0 #random.random() #Neuron bias value
+        self.bias = 0#random.random() #Neuron bias value
         self.value = 0
     
     def activate(self):
@@ -25,10 +26,11 @@ class Synapse:
     def __init__(self, leftNeuron, rightNeuron):
         self.leftNeuron = leftNeuron
         self.rightNeuron = rightNeuron
-        self.weight = random.uniform(0, 0.3) #random weight bewteen 0 and 1
+        self.weight = numpy.random.normal(1, 0.1, 1)
+        print(self.weight)
     
     def fire(self):
-        self.rightNeuron.value += (self.leftNeuron.value * self.weight) #+ self.rightNeuron.bias
+        self.rightNeuron.value += (self.leftNeuron.value * self.weight) + self.rightNeuron.bias
 
     def __str__(self):
         return "l neuron value:" , '\t' + str(self.leftNeuron.value)+ '\t', "r neuron value:", '\t' + str(self.rightNeuron.value)
@@ -67,7 +69,8 @@ class NeuralNetwork:
     def fireNetwork(self, inputList):
         if len(inputList) != len(self.inputLayer):
             raise ValueError("Number of inputs did not match number of inputs on neural network.")
-
+        
+        self.clearNeurons()
         for i in range(len(inputList)):
             self.inputLayer[i].setValue(inputList[i])
 
@@ -96,4 +99,3 @@ class NeuralNetwork:
         for synapse in self.outputLayerSynapses:
             print (counter, " ", synapse.__str__())
             counter += 1
-print(sigmoid(0))

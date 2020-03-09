@@ -9,25 +9,25 @@ def sigmoid(x):
     Returns the sigmoid of x
     :rtype: number
     """
-    return (math.pow(e,x)) / ((math.pow(e,x)) + 1)
+    return (math.pow(e, x)) / ((math.pow(e, x)) + 1)
 
 class Neuron:
     """
     An indvidual node in a network
     """
-    def __init__(self): 
+    def __init__(self):
         """
         Initialize a neuron
         """
         self.bias = 0#random.random() #Neuron bias value
         self.value = 0
-    
+        
     def activate(self):
         """
         Activates the neuron by computing the sigmoid of its value
         """
         self.value = sigmoid(self.value)
-    
+        
     def setValue(self, value):
         """
         Directly set the value inside the neuron
@@ -46,10 +46,11 @@ class Synapse:
         self.rightNeuron = rightNeuron
         self.weight = numpy.random.normal(1, 0.1, 1)
         print(self.weight)
-    
+        
     def fire(self):
         """
-        Fire the synapse by pulling the value from the left neuron, multiplying by the weight, then adding it to the value of the right neuron.
+        Fire the synapse by pulling the value from the left neuron, multiplying by the weight, 
+        then adding it to the value of the right neuron.
         """
         self.rightNeuron.value += (self.leftNeuron.value * self.weight) + self.rightNeuron.bias
 
@@ -57,7 +58,8 @@ class Synapse:
         """
         Converts a synapse to a string for debuging proposes.
         """
-        return "l neuron value:" , '\t' + str(self.leftNeuron.value)+ '\t', "r neuron value:", '\t' + str(self.rightNeuron.value)
+        return "l neuron value:", '\t' + str(self.leftNeuron.value)+ 
+        '\t', "r neuron value:", '\t' + str(self.rightNeuron.value)
 
 
 class NeuralNetwork:
@@ -71,7 +73,8 @@ class NeuralNetwork:
         First argument is the number of input nodes
         Second argument is the number of output nodes
         
-        There is always one fully hidden connected layer with the same number of nodes as the input layer.
+        There is always one fully hidden connected layer with the same number of nodes as the 
+        input layer.
         """
         self.inputLayer = []
         for i in range(numInputs):

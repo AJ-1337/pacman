@@ -1,0 +1,163 @@
+************* Module pacman.neuralNetwork
+C: 12, 0: Exactly one space required after comma
+    return (math.pow(e,x)) / ((math.pow(e,x)) + 1)
+                      ^ (bad-whitespace)
+C: 12, 0: Exactly one space required after comma
+    return (math.pow(e,x)) / ((math.pow(e,x)) + 1)
+                                         ^ (bad-whitespace)
+C: 18, 0: Trailing whitespace (trailing-whitespace)
+C: 24, 0: Trailing whitespace (trailing-whitespace)
+C: 30, 0: Trailing whitespace (trailing-whitespace)
+C: 48, 0: Unnecessary parens after 'print' keyword (superfluous-parens)
+C: 49, 0: Trailing whitespace (trailing-whitespace)
+C: 52, 0: Line too long (143/100) (line-too-long)
+C: 60, 0: Line too long (129/100) (line-too-long)
+C: 60, 0: No space allowed before comma
+        return "l neuron value:" , '\t' + str(self.leftNeuron.value)+ '\t', "r neuron value:", '\t' + str(self.rightNeuron.value)
+                                 ^ (bad-whitespace)
+C: 66, 0: Trailing whitespace (trailing-whitespace)
+C: 73, 0: Trailing whitespace (trailing-whitespace)
+C: 74, 0: Line too long (106/100) (line-too-long)
+C: 97, 0: Trailing whitespace (trailing-whitespace)
+C:110, 0: Trailing whitespace (trailing-whitespace)
+C:116, 0: Trailing whitespace (trailing-whitespace)
+C:  1, 0: Invalid module name "neuralNetwork" (invalid-name)
+C:  5, 0: Invalid constant name "e" (invalid-name)
+C:  7, 0: Invalid argument name "x" (invalid-name)
+C: 14, 0: Old-style class defined. (old-style-class)
+C: 31, 4: Invalid method name "setValue" (invalid-name)
+C: 46, 8: Invalid attribute name "rightNeuron" (invalid-name)
+C: 45, 8: Invalid attribute name "leftNeuron" (invalid-name)
+C: 37, 0: Old-style class defined. (old-style-class)
+C: 41, 4: Invalid argument name "leftNeuron" (invalid-name)
+C: 41, 4: Invalid argument name "rightNeuron" (invalid-name)
+E: 47,22: Module 'numpy.random' has no 'normal' member (no-member)
+R: 37, 0: Too few public methods (1/2) (too-few-public-methods)
+C: 80, 8: Invalid attribute name "hiddenLayer" (invalid-name)
+C: 76, 8: Invalid attribute name "inputLayer" (invalid-name)
+C: 81, 8: Invalid attribute name "hiddenLayerSynapses" (invalid-name)
+C: 90, 8: Invalid attribute name "outputLayerSynapses" (invalid-name)
+C: 89, 8: Invalid attribute name "outputLayer" (invalid-name)
+C: 63, 0: Old-style class defined. (old-style-class)
+C: 69, 4: Invalid argument name "numInputs" (invalid-name)
+C: 69, 4: Invalid argument name "numOutputs" (invalid-name)
+W: 77,12: Unused variable 'i' (unused-variable)
+C: 98, 4: Invalid method name "clearNeurons" (invalid-name)
+C:107, 4: Invalid method name "fireNetwork" (invalid-name)
+C:107, 4: Invalid argument name "inputList" (invalid-name)
+C:118, 8: Consider using enumerate instead of iterating with range and len (consider-using-enumerate)
+C:138, 4: Invalid method name "printSynapses" (invalid-name)
+W:  2, 0: Unused import random (unused-import)
+
+
+Report
+======
+76 statements analysed.
+
+Statistics by type
+------------------
+
++---------+-------+-----------+-----------+------------+---------+
+|type     |number |old number |difference |%documented |%badname |
++=========+=======+===========+===========+============+=========+
+|module   |1      |1          |=          |100.00      |100.00   |
++---------+-------+-----------+-----------+------------+---------+
+|class    |3      |3          |=          |100.00      |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|method   |10     |10         |=          |100.00      |40.00    |
++---------+-------+-----------+-----------+------------+---------+
+|function |1      |1          |=          |100.00      |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+
+
+
+External dependencies
+---------------------
+::
+
+    numpy (pacman.neuralNetwork)
+
+
+
+Raw metrics
+-----------
+
++----------+-------+------+---------+-----------+
+|type      |number |%     |previous |difference |
++==========+=======+======+=========+===========+
+|code      |77     |51.68 |77       |=          |
++----------+-------+------+---------+-----------+
+|docstring |52     |34.90 |52       |=          |
++----------+-------+------+---------+-----------+
+|comment   |1      |0.67  |1        |=          |
++----------+-------+------+---------+-----------+
+|empty     |19     |12.75 |19       |=          |
++----------+-------+------+---------+-----------+
+
+
+
+Duplication
+-----------
+
++-------------------------+------+---------+-----------+
+|                         |now   |previous |difference |
++=========================+======+=========+===========+
+|nb duplicated lines      |0     |0        |=          |
++-------------------------+------+---------+-----------+
+|percent duplicated lines |0.000 |0.000    |=          |
++-------------------------+------+---------+-----------+
+
+
+
+Messages by category
+--------------------
+
++-----------+-------+---------+-----------+
+|type       |number |previous |difference |
++===========+=======+=========+===========+
+|convention |39     |39       |=          |
++-----------+-------+---------+-----------+
+|refactor   |1      |1        |=          |
++-----------+-------+---------+-----------+
+|warning    |2      |2        |=          |
++-----------+-------+---------+-----------+
+|error      |1      |1        |=          |
++-----------+-------+---------+-----------+
+
+
+
+Messages
+--------
+
++-------------------------+------------+
+|message id               |occurrences |
++=========================+============+
+|invalid-name             |19          |
++-------------------------+------------+
+|trailing-whitespace      |9           |
++-------------------------+------------+
+|old-style-class          |3           |
++-------------------------+------------+
+|line-too-long            |3           |
++-------------------------+------------+
+|bad-whitespace           |3           |
++-------------------------+------------+
+|unused-variable          |1           |
++-------------------------+------------+
+|unused-import            |1           |
++-------------------------+------------+
+|too-few-public-methods   |1           |
++-------------------------+------------+
+|superfluous-parens       |1           |
++-------------------------+------------+
+|no-member                |1           |
++-------------------------+------------+
+|consider-using-enumerate |1           |
++-------------------------+------------+
+
+
+
+Global evaluation
+-----------------
+Your code has been rated at 3.82/10 (previous run: 3.82/10, +0.00)
+

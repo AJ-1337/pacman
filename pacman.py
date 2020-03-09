@@ -10,6 +10,7 @@ nn = neuralNetwork.NeuralNetwork(10, 4)
 lastNearestGhostDistance = 0
 
 def test():
+    
     #Pacman's X and Y coordinates based on his memory address
     pacmanX = api.peekCPU(0x001A) / 255.0
     pacmanY = api.peekCPU(0x001C) / 255.0

@@ -21,9 +21,9 @@ class Evolver:
         self.population = []
         for i in range(self.populationSize):
             self.population.append(nn.NeuralNetwork(10, 4))
-    def getFitness(self):
+    def getCurrentFitness(self):
         """
-        Gets the fitness of the neural network
+        Gets the fitness of current running network (score of the game)
         """
         fitness = 0
         digit = 1

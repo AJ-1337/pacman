@@ -2,6 +2,7 @@
 import random
 import math
 import numpy
+import copy
 e = 2.718
 
 def sigmoid(x):
@@ -79,6 +80,7 @@ class NeuralNetwork:
         There is always one fully hidden connected layer with the same number of nodes as the 
         input layer.
         """
+        self.fitness = 0
         self.inputLayer = []
         for i in range(numInputs):
             self.inputLayer.append(Neuron())
@@ -153,3 +155,5 @@ class NeuralNetwork:
         for synapse in self.outputLayerSynapses:
             print (counter, " ", synapse.__str__())
             counter += 1
+    def cloneNetwork(self):
+        return copy.deepcopy(self)

@@ -24,4 +24,16 @@ class Evolver:
             roll = random.uniform(0, 1)
             if roll < self.mutationRate:
                 synapse.mutate()
-    
+    def generateNewPopulation(self):
+        mostFitNetwork = self.population[0]
+        newPopulation = []
+        for network in self.population:
+            if network.fitness > mostFitNetwork.fitness:
+                mostFitNetwork = network
+        for i in range(self.populationSize - 1):
+            newNetwork = mostFitNetwork.clone()
+            mutateNetwork(newNetwork)
+            newPopulation.append(newNetwork)
+        newPopulation.append(mostFitNetwork)
+        self.population = newPopulation
+            

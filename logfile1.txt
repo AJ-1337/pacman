@@ -1,0 +1,21 @@
+('Incrementing network, score was ', 60)
+('Incrementing network, score was ', 140)
+('Incrementing network, score was ', 100)
+KeyboardInterrupt: 
+  File "/mnt/c/Users/AJ/Desktop/Nintaco/pacman/nintaco.py", line 311, in run
+    self._probeEvents()
+  File "/mnt/c/Users/AJ/Desktop/Nintaco/pacman/nintaco.py", line 357, in _probeEvents
+    eventType = self._stream.readByte()
+  File "/mnt/c/Users/AJ/Desktop/Nintaco/pacman/nintaco.py", line 179, in readByte
+    self._fillReadBuffer(1)
+  File "/mnt/c/Users/AJ/Desktop/Nintaco/pacman/nintaco.py", line 167, in _fillReadBuffer
+    block = self._sock.recv(_BLOCK_SIZE)
+KeyboardInterrupt: 
+  File "/mnt/c/Users/AJ/Desktop/Nintaco/pacman/nintaco.py", line 311, in run
+    self._probeEvents()
+  File "/mnt/c/Users/AJ/Desktop/Nintaco/pacman/nintaco.py", line 357, in _probeEvents
+    eventType = self._stream.readByte()
+  File "/mnt/c/Users/AJ/Desktop/Nintaco/pacman/nintaco.py", line 179, in readByte
+    self._fillReadBuffer(1)
+  File "/mnt/c/Users/AJ/Desktop/Nintaco/pacman/nintaco.py", line 167, in _fillReadBuffer
+    block = self._sock.recv(_BLOCK_SIZE)

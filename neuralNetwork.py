@@ -47,7 +47,7 @@ class Synapse:
         """
         self.leftNeuron = leftNeuron
         self.rightNeuron = rightNeuron
-        self.weight = numpy.random.normal(1, 0.1, 1)
+        self.weight = random.uniform(-2, 2)
         #print(self.weight)
         
     def fire(self):
@@ -61,14 +61,13 @@ class Synapse:
         """
         Converts a synapse to a string for debuging proposes.
         """
-        return ( "l neuron value:", '\t' + str(self.leftNeuron.value) + 
-            '\t', "r neuron value:", '\t' + str(self.rightNeuron.value) )
+        return str(self.weight)
     
     def mutate(self):
         """
         Randomly adjusts the weight of the synapse
         """
-        self.weight += random.uniform(-0.1, 0.1)
+        self.weight += random.uniform(-0.5, 0.5)
 
 
 class NeuralNetwork:
@@ -152,7 +151,7 @@ class NeuralNetwork:
         """
         Returns a concatenation of all the synapses
         """
-        return self.inputLayer + self.hiddenLayer + self.outputLayer
+        return self.hiddenLayerSynapses + self.outputLayerSynapses
         
     def printSynapses(self):
         """
@@ -165,5 +164,9 @@ class NeuralNetwork:
         for synapse in self.outputLayerSynapses:
             print (counter, " ", synapse.__str__())
             counter += 1
-    def cloneNetwork(self):
+    
+    def clone(self):
+        """
+        Create a deep copy of the neural network.
+        """
         return copy.deepcopy(self)

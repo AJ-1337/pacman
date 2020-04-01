@@ -1,4 +1,6 @@
-"""Module to create neural network"""
+"""
+Module to create neural network
+"""
 import random
 import math
 import numpy
@@ -63,6 +65,9 @@ class Synapse:
             '\t', "r neuron value:", '\t' + str(self.rightNeuron.value) )
     
     def mutate(self):
+        """
+        Randomly adjusts the weight of the synapse
+        """
         self.weight += random.uniform(-0.1, 0.1)
 
 
@@ -142,8 +147,13 @@ class NeuralNetwork:
             output.append(neuron.value)
         #self.clearNeurons()
         return output
+        
     def getSynapses(self):
+        """
+        Returns a concatenation of all the synapses
+        """
         return self.inputLayer + self.hiddenLayer + self.outputLayer
+        
     def printSynapses(self):
         """
         Print the synapses

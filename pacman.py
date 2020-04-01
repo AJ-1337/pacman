@@ -2,15 +2,20 @@ import sys
 import nintaco
 import math
 import neuralNetwork
+import evolver
 
 nintaco.initRemoteAPI("localhost", 9999)
 api = nintaco.getAPI()
 nn = neuralNetwork.NeuralNetwork(10, 4)
 
 lastNearestGhostDistance = 0
+evolver1 = evolver.Evolver(api, 10)
+
+def real_test_lol():
+    print(evolver1.getFitness())
 
 def test():
-    
+    print(evolver1.getFitness())
     #Pacman's X and Y coordinates based on his memory address
     pacmanX = api.peekCPU(0x001A) / 255.0
     pacmanY = api.peekCPU(0x001C) / 255.0
@@ -39,7 +44,7 @@ def test():
     #Calculates the distance from cylde to pacman based on their memory addresses.
     clydeDistance = math.sqrt( math.pow(clydeX - pacmanX, 2) + math.pow(clydeY - pacmanY, 2))
     
-    nearestGhostDistance = math.min(pinkyDistance, blinkyDistance, inkyDistance, clydeDistance)
+    #nearestGhostDistance = math.min(pinkyDistance, blinkyDistance, inkyDistance, clydeDistance)
     deltaGhostDistance = nearestGhostDistance - lastNearestGhostDistance
     lastNearestGhostDistance = nearestGhostDistance
     
@@ -64,5 +69,5 @@ def test():
     
     
 
-api.addControllersListener(test)
+api.addControllersListener(real_test_lol)
 api.run()

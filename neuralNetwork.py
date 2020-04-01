@@ -45,7 +45,7 @@ class Synapse:
         self.leftNeuron = leftNeuron
         self.rightNeuron = rightNeuron
         self.weight = numpy.random.normal(1, 0.1, 1)
-        print(self.weight)
+        #print(self.weight)
         
     def fire(self):
         """
@@ -58,8 +58,11 @@ class Synapse:
         """
         Converts a synapse to a string for debuging proposes.
         """
-        return "l neuron value:", '\t' + str(self.leftNeuron.value)+ 
-        '\t', "r neuron value:", '\t' + str(self.rightNeuron.value)
+        return ( "l neuron value:", '\t' + str(self.leftNeuron.value) + 
+            '\t', "r neuron value:", '\t' + str(self.rightNeuron.value) )
+    
+    def mutate(self):
+        self.weight += random.uniform(-0.1, 0.1)
 
 
 class NeuralNetwork:
@@ -137,7 +140,8 @@ class NeuralNetwork:
             output.append(neuron.value)
         #self.clearNeurons()
         return output
-
+    def getSynapses(self):
+        return self.inputLayer + self.hiddenLayer + self.outputLayer
     def printSynapses(self):
         """
         Print the synapses

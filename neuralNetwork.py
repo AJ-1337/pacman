@@ -63,11 +63,11 @@ class Synapse:
         """
         return str(self.weight)
     
-    def mutate(self):
+    def mutate(self, intensity = 0.5):
         """
         Randomly adjusts the weight of the synapse
         """
-        self.weight += random.uniform(-0.5, 0.5)
+        self.weight += random.uniform(-intensity, intensity)
 
 
 class NeuralNetwork:

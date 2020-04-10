@@ -11,12 +11,13 @@ class Evolver:
     Class that handles mutations, keeping track of the fitness,
     and creating new populations.
     """
-    def __init__(self, api, populationSize = 6, mutationRate = 0.1):
+    def __init__(self, api, populationSize = 20, mutationRate = 0.1):
         """
         initalizes an evolver
         """
         self.populationSize = populationSize
         self.api = api
+        self.originalMutationRate = mutationRate
         self.mutationRate = mutationRate
         self.spamStart = False
         self.spamDirection = False
@@ -51,28 +52,44 @@ class Evolver:
             if roll < self.mutationRate:
                 synapse.mutate()
     
-    def generateNewPopulation(self):
+    def generateNewPopulation(self, keepBestProportion = 0.1, keepRandomProportion = 0.1):
         """
         Generates a new population based off most fit network
+        keepBestProportion refers to the proportion of the most fit members
+        of the population that should be kept. keepRandomProportion refers
+        to the proportion of other random members of the population that
+        should be kept. Numbers are rounded down when not whole.
+        
         """
         self.generationCount += 1
         print("Generating a new population: Generation # ", self.generationCount)
         mostFitNetwork = self.population[0]
+        networksToKeep = []
         newPopulation = []
-        #Finds the most fit network
-        for network in self.population:
-            if network.fitness > mostFitNetwork.fitness:
-                mostFitNetwork = network
+        
+        #Sort the network from most fit to least fit
+        self.population.sort(key = lambda x: x.fitness, reverse = True)
+        numBestToKeep = int(keepBestProportion * self.populationSize)
+        numRandomToKeep = int(keepRandomProportion * self.populationSize)
+        numToKeep = numBestToKeep + numRandomToKeep
+        numOffspringPerNetwork = int( (self.populationSize / numToKeep) - 1 )
+        
+        networksToKeep.extend(self.population[0:numBestToKeep]) #Immediately append the "keepers"
+        randomKeepers = random.sample(self.population[numBestToKeep:], numRandomToKeep)
+        networksToKeep.extend(randomKeepers)
+        mostFitNetwork = self.population[0]
         #Generates 9 new mutants from the most fit network     
         print("The most fit network in this generation had a fitness of: ", mostFitNetwork.fitness)
-        print("It's synapses were:")
-        mostFitNetwork.printSynapses()
-        for i in range(self.populationSize - 1):
-            newNetwork = mostFitNetwork.clone()
-            self.mutateNetwork(newNetwork)
-            newPopulation.append(newNetwork)
-        #Orignal most fit network    
-        newPopulation.append(mostFitNetwork)
+        #print("It's synapses were:")
+        #mostFitNetwork.printSynapses()
+        
+        #Generate the offspring from the networks we've selected to keep.
+        for network in networksToKeep:
+            newPopulation.append(network) #Put the parent in, it survived
+            for i in range(numOffspringPerNetwork): #Produce it's children
+                offspring = network.clone()
+                self.mutateNetwork(offspring)
+                newPopulation.append(offspring) 
         self.population = newPopulation
         self.currentNetworkIndex = 0
         self.currentNetwork = self.population[0]
@@ -126,7 +143,7 @@ class Evolver:
         """
         Increments the current network to the next one.
         """
-        print("Incrementing network, score was ", self.currentNetwork.fitness)
+        print("Network #", self.currentNetworkIndex, ", Incrementing network, score was ", self.currentNetwork.fitness)
         self.spamStart = True
         if self.currentNetworkIndex >= self.populationSize - 1:
             raise ValueError("You cannot increment any further - you're on the last network in the population!")
@@ -157,7 +174,7 @@ class Evolver:
 
 nintaco.initRemoteAPI("localhost", 9999)
 api = nintaco.getAPI()
-evolver = Evolver(api)
+evolver = Evolver(api, populationSize = 100, mutationRate = 0.2)
 api.addFrameListener(evolver.playGame)
 api.addAccessPointListener(evolver.onLifeCountChanged, nintaco.PostWrite, 0x0067)
 api.run()

@@ -2,7 +2,6 @@
 Module to evolve the Neural Networks
 """
 import neuralNetwork as nn
-import nintaco
 import math
 import random
 
@@ -40,7 +39,8 @@ class Evolver:
             fitness = fitness + ((self.api.peekCPU(address)) * digit)
             digit *= 10
         return fitness * 10
-    
+    def test_bruh(self):
+        assert 5 == 5, "uh oh"
     def mutateNetwork(self, network):
         """
         Mutates the weights of the synapses in the network
@@ -102,25 +102,25 @@ class Evolver:
         This function is called every emulator frame.
         """
         if self.spamStart:
-            api.writeGamepad(0, 3, self.spamDirection) #Start button
+            self.api.writeGamepad(0, 3, self.spamDirection) #Start button
             self.spamDirection = not self.spamDirection
         
         #Pacman's X and Y coordinates based on his memory address
-        pacmanX = api.peekCPU(0x001A) / 255.0
-        pacmanY = api.peekCPU(0x001C) / 255.0
+        pacmanX = self.api.peekCPU(0x001A) / 255.0
+        pacmanY = self.api.peekCPU(0x001C) / 255.0
         
         #Pinky's X and Y coordinates based on his memory address.
-        pinkyX = api.peekCPU(0x0022) / 255.0
-        pinkyY = api.peekCPU(0x0024) / 255.0
+        pinkyX = self.api.peekCPU(0x0022) / 255.0
+        pinkyY = self.api.peekCPU(0x0024) / 255.0
         
-        blinkyX = api.peekCPU(0x001E) / 255.0
-        blinkyY = api.peekCPU(0x0020) / 255.0
+        blinkyX = self.api.peekCPU(0x001E) / 255.0
+        blinkyY = self.api.peekCPU(0x0020) / 255.0
         
-        inkyX = api.peekCPU(0x0026) / 255.0
-        inkyY = api.peekCPU(0x0028) / 255.0
+        inkyX = self.api.peekCPU(0x0026) / 255.0
+        inkyY = self.api.peekCPU(0x0028) / 255.0
         
-        clydeX = api.peekCPU(0x002A) / 255.0
-        clydeY = api.peekCPU(0x002C) / 255.0
+        clydeX = self.api.peekCPU(0x002A) / 255.0
+        clydeY = self.api.peekCPU(0x002C) / 255.0
         
         output = self.currentNetwork.fireNetwork([pacmanX, pacmanY,
         pinkyX, pinkyY,
@@ -130,13 +130,13 @@ class Evolver:
         ])
         m = max(output)
         if output[0] >= m:
-            api.writeGamepad(0, 4, True) # Gamepad 0, 4 = up, True = pressed
+            self.api.writeGamepad(0, 4, True) # Gamepad 0, 4 = up, True = pressed
         elif output[1] >= m:
-            api.writeGamepad(0, 5, True) # down
+            self.api.writeGamepad(0, 5, True) # down
         elif output[2] >= m:
-            api.writeGamepad(0, 6, True) # left
+            self.api.writeGamepad(0, 6, True) # left
         elif output[3] >= m:
-            api.writeGamepad(0, 7, True) # right
+            self.api.writeGamepad(0, 7, True) # right
         self.currentNetwork.fitness = self.getCurrentFitness()
     
     def incrementNetwork(self):
@@ -171,10 +171,3 @@ class Evolver:
             self.spamStart = False
         self.lastLifeCount = value
         return -1 #Return no change to value for the emulator API.
-
-nintaco.initRemoteAPI("localhost", 9999)
-api = nintaco.getAPI()
-evolver = Evolver(api, populationSize = 100, mutationRate = 0.2)
-api.addFrameListener(evolver.playGame)
-api.addAccessPointListener(evolver.onLifeCountChanged, nintaco.PostWrite, 0x0067)
-api.run()

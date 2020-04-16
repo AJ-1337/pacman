@@ -6,6 +6,19 @@ import math
 import random
 import time
 
+GAMEPAD_START = 3
+GAMEPAD_UP = 4
+GAMEPAD_DOWN = 5
+GAMEPAD_LEFT = 6
+GAMEPAD_RIGHT = 7
+
+PACMAN_POS_ADDR = 0x001A
+PINKY_POS_ADDR = 0x0022
+BLINKY_POS_ADDR = 0x001E
+INKY_POS_ADDR = 0x0026
+CLYDE_POS_ADDR = 0x002A
+
+
 class Evolver:
     """
     Class that handles mutations, keeping track of the fitness,
@@ -119,31 +132,35 @@ class Evolver:
             network.fitness = 0 #Set fitness to zero on every new network.
         self.generationCount += 1
     
+    def writeGamepad(self, button, pressed):
+        self.api.writeGamepad(0, button, pressed)
+        
+    def readMemory(self, address):
+        return self.api.peekCPU(address)
+    
     def playGame(self):
         """
         Plays the game with the current network.
         This function is called every emulator frame.
         """
         if self.spamStart:
-            self.api.writeGamepad(0, 3, self.spamDirection) #Start button
+            self.writeGamepad(GAMEPAD_START, self.spamDirection)
             self.spamDirection = not self.spamDirection
         
-        #Pacman's X and Y coordinates based on his memory address
-        pacmanX = self.api.peekCPU(0x001A) / 255.0
-        pacmanY = self.api.peekCPU(0x001C) / 255.0
+        pacmanX = self.readMemory(PACMAN_POS_ADDR) / 255.0
+        pacmanY = self.readMemory(PACMAN_POS_ADDR + 2) / 255.0
         
-        #Pinky's X and Y coordinates based on his memory address.
-        pinkyX = self.api.peekCPU(0x0022) / 255.0
-        pinkyY = self.api.peekCPU(0x0024) / 255.0
+        pinkyX = self.readMemory(PINKY_POS_ADDR) / 255.0
+        pinkyY = self.readMemory(PINKY_POS_ADDR + 2) / 255.0
         
-        blinkyX = self.api.peekCPU(0x001E) / 255.0
-        blinkyY = self.api.peekCPU(0x0020) / 255.0
+        blinkyX = self.readMemory(BLINKY_POS_ADDR) / 255.0
+        blinkyY = self.readMemory(BLINKY_POS_ADDR + 2) / 255.0
         
-        inkyX = self.api.peekCPU(0x0026) / 255.0
-        inkyY = self.api.peekCPU(0x0028) / 255.0
+        inkyX = self.readMemory(INKY_POS_ADDR) / 255.0
+        inkyY = self.readMemory(INKY_POS_ADDR + 2) / 255.0
         
-        clydeX = self.api.peekCPU(0x002A) / 255.0
-        clydeY = self.api.peekCPU(0x002C) / 255.0
+        clydeX = self.readMemory(CLYDE_POS_ADDR) / 255.0
+        clydeY = self.readMemory(CLYDE_POS_ADDR + 2) / 255.0
         
         output = self.currentNetwork.fireNetwork([pacmanX, pacmanY,
         pinkyX, pinkyY,
@@ -153,13 +170,13 @@ class Evolver:
         ])
         m = max(output)
         if output[0] >= m:
-            self.api.writeGamepad(0, 4, True) # Gamepad 0, 4 = up, True = pressed
+            self.writeGamepad(GAMEPAD_UP, True)
         elif output[1] >= m:
-            self.api.writeGamepad(0, 5, True) # down
+            self.writeGamepad(GAMEPAD_DOWN, True)
         elif output[2] >= m:
-            self.api.writeGamepad(0, 6, True) # left
+            self.writeGamepad(GAMEPAD_LEFT, True)
         elif output[3] >= m:
-            self.api.writeGamepad(0, 7, True) # right
+            self.writeGamepad(GAMEPAD_RIGHT, True)
         self.currentNetwork.fitness = self.getCurrentFitness()
     
     def incrementNetwork(self):

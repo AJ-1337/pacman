@@ -4,13 +4,14 @@ Module to evolve the Neural Networks
 import neuralNetwork as nn
 import math
 import random
+import time
 
 class Evolver:
     """
     Class that handles mutations, keeping track of the fitness,
     and creating new populations.
     """
-    def __init__(self, api, populationSize = 20, mutationRate = 0.1):
+    def __init__(self, api, populationSize = 20, mutationRate = 0.1, maxGenerations = 0, showResults = True):
         """
         initalizes an evolver
         """
@@ -20,13 +21,18 @@ class Evolver:
         self.mutationRate = mutationRate
         self.spamStart = False
         self.spamDirection = False
-        self.generationCount = 0
+        self.generationCount = 1
+        self.maxGenerations = maxGenerations
         self.population = []
         for i in range(self.populationSize):
             self.population.append(nn.NeuralNetwork(10, 4))
         self.currentNetwork = self.population[0]
         self.currentNetworkIndex = 0
         self.lastLifeCount = 3
+        self.initialFitness = 0
+        self.bestFitness = 0
+        self.startTime = time.time()
+        self.showResults = showResults
     
     def getCurrentFitness(self):
         """
@@ -39,8 +45,6 @@ class Evolver:
             fitness = fitness + ((self.api.peekCPU(address)) * digit)
             digit *= 10
         return fitness * 10
-    def test_bruh(self):
-        assert 5 == 5, "uh oh"
     def mutateNetwork(self, network):
         """
         Mutates the weights of the synapses in the network
@@ -52,6 +56,13 @@ class Evolver:
             if roll < self.mutationRate:
                 synapse.mutate()
     
+    def printResultsReport(self):
+        print("The AI began with a fitness of ", self.initialFitness)
+        print("It ran for a total of ", self.generationCount, " generations.")
+        print("It's best fitness was ", self.bestFitness)
+        print("This represents an average improvement of ", float(self.bestFitness - self.initialFitness) / (self.generationCount - 1), " points per generation.")
+        print("The evolver ran for a total of ", time.time() - self.startTime, " seconds")
+    
     def generateNewPopulation(self, keepBestProportion = 0.1, keepRandomProportion = 0.1):
         """
         Generates a new population based off most fit network
@@ -61,8 +72,7 @@ class Evolver:
         should be kept. Numbers are rounded down when not whole.
         
         """
-        self.generationCount += 1
-        print("Generating a new population: Generation # ", self.generationCount)
+
         mostFitNetwork = self.population[0]
         networksToKeep = []
         newPopulation = []
@@ -80,8 +90,20 @@ class Evolver:
         mostFitNetwork = self.population[0]
         #Generates 9 new mutants from the most fit network     
         print("The most fit network in this generation had a fitness of: ", mostFitNetwork.fitness)
-        #print("It's synapses were:")
-        #mostFitNetwork.printSynapses()
+        
+        if self.generationCount == 1:
+            self.initialFitness = mostFitNetwork.fitness
+            self.bestFitness = mostFitNetwork.fitness
+        else:
+            self.bestFitness = max(self.bestFitness, mostFitNetwork.fitness)
+            
+        if self.maxGenerations!=0 and self.generationCount >= self.maxGenerations:
+            self.api.removeFrameListener(self.playGame)
+            self.api.setPaused(True)
+            if self.showResults:
+                self.printResultsReport()
+                return
+        print("Generating a new population: Generation # ", self.generationCount)
         
         #Generate the offspring from the networks we've selected to keep.
         for network in networksToKeep:
@@ -95,6 +117,7 @@ class Evolver:
         self.currentNetwork = self.population[0]
         for network in self.population:
             network.fitness = 0 #Set fitness to zero on every new network.
+        self.generationCount += 1
     
     def playGame(self):
         """

@@ -74,6 +74,9 @@ class Evolver:
                 synapse.mutate()
     
     def printResultsReport(self):
+        """
+        Prints the stats from the evolution trials.
+        """
         print("The AI began with a fitness of ", self.initialFitness)
         print("It ran for a total of ", self.generationCount, " generations.")
         print("It's best fitness was ", self.bestFitness)
@@ -82,6 +85,9 @@ class Evolver:
         return True
     
     def printGenerationResults(self, highestFitness):
+        """
+        Prints the results from each generation during the evolution process.
+        """
         print("Generation results for Generation #", self.generationCount)
         print("The most fit network of this generation had a fitness of ", highestFitness)
         return True
@@ -143,9 +149,15 @@ class Evolver:
         self.generationCount += 1
     
     def writeGamepad(self, button, pressed):
+        """
+        Utility function for sending commands to the emulator
+        """
         self.api.writeGamepad(0, button, pressed)
         
     def readMemory(self, address):
+        """
+        Utility function for reading from the emulator
+        """
         return self.api.peekCPU(address)
     
     def playGame(self):

@@ -164,6 +164,7 @@ class NeuralNetwork:
         for synapse in self.outputLayerSynapses:
             print (counter, " ", synapse.__str__())
             counter += 1
+        return True
     
     def clone(self):
         """

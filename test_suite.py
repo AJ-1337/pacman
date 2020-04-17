@@ -63,7 +63,7 @@ def test_readMemoryByFrame(): #Req 6
     def frameCounter():
         global frameCount
         frameCount+=1
-        assert frameCount == evolver.frameCount #If the evolver had an error processing the game, the frame counts wont match!
+        assert frameCount == evolver.frameCount #If the evolver failed to read memory, the frame counts wont match!
         if frameCount > 25000: #Test 25,000 frames of gameplay, making sure the tester's frame counter never falls out of sync with the evolver.
             api.removeFrameListener(frameCounter)
             api.removeFrameListener(evolver.playGame)
@@ -76,6 +76,7 @@ def test_readMemoryByFrame(): #Req 6
 def test_saveNeuralNetwork(): #Req 7
     neuralNetwork = nn.NeuralNetwork(4,4)
     assert neuralNetwork.printSynapses()
-#Bonus / supplementary tests for additional coverage
+
+#Bonus / supplementary tests
 def test_sigmoid():
     assert nn.sigmoid(0) == pytest.approx(0.5)

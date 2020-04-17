@@ -1,0 +1,9 @@
+coverage run --source=. -m --omit nintaco.py,main.py pytest
+================================================= test session starts ==================================================
+platform linux2 -- Python 2.7.15rc1, pytest-3.3.2, py-1.5.2, pluggy-0.6.0
+rootdir: /mnt/c/Users/AJ/Desktop/Nintaco/pacman, inifile:
+collected 8 items
+
+test_suite.py ........                                                                                           [100%]
+
+============================================== 8 passed in 113.66 seconds ==============================================

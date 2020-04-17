@@ -9,7 +9,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>neuralNetwork</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/mnt/c/Users/Andrew/Desktop/Nintaco/pacman/neuralNetwork.py">/mnt/c/Users/Andrew/Desktop/Nintaco/pacman/neuralNetwork.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/mnt/c/Users/Zack Frent/350Project/pacman/neuralNetwork.py">/mnt/c/Users/Zack Frent/350Project/pacman/neuralNetwork.py</a></font></td></tr></table>
     <p><tt>Module&nbsp;to&nbsp;create&nbsp;neural&nbsp;network</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -18,8 +18,8 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="math.html">math</a><br>
-</td><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="copy.html">copy</a><br>
+</td><td width="25%" valign=top><a href="math.html">math</a><br>
 </td><td width="25%" valign=top><a href="random.html">random</a><br>
 </td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -48,14 +48,19 @@ Initialize&nbsp;it&nbsp;given&nbsp;the&nbsp;number&nbsp;of&nbsp;inputs&nbsp;and&
 <dl><dt><a name="NeuralNetwork-__init__"><strong>__init__</strong></a>(self, numInputs, numOutputs)</dt><dd><tt>First&nbsp;argument&nbsp;is&nbsp;the&nbsp;number&nbsp;of&nbsp;input&nbsp;nodes<br>
 Second&nbsp;argument&nbsp;is&nbsp;the&nbsp;number&nbsp;of&nbsp;output&nbsp;nodes<br>
 &nbsp;<br>
-There&nbsp;is&nbsp;always&nbsp;one&nbsp;fully&nbsp;hidden&nbsp;connected&nbsp;layer&nbsp;with&nbsp;the&nbsp;same&nbsp;number&nbsp;of&nbsp;nodes&nbsp;as&nbsp;the&nbsp;input&nbsp;layer.</tt></dd></dl>
+There&nbsp;is&nbsp;always&nbsp;one&nbsp;fully&nbsp;hidden&nbsp;connected&nbsp;layer&nbsp;with&nbsp;the&nbsp;same&nbsp;number&nbsp;of&nbsp;nodes&nbsp;as&nbsp;the<br>
+input&nbsp;layer.</tt></dd></dl>
 
 <dl><dt><a name="NeuralNetwork-clearNeurons"><strong>clearNeurons</strong></a>(self)</dt><dd><tt>Set&nbsp;the&nbsp;value&nbsp;of&nbsp;every&nbsp;neuron&nbsp;in&nbsp;the&nbsp;network&nbsp;to&nbsp;zero.</tt></dd></dl>
+
+<dl><dt><a name="NeuralNetwork-clone"><strong>clone</strong></a>(self)</dt><dd><tt>Create&nbsp;a&nbsp;deep&nbsp;copy&nbsp;of&nbsp;the&nbsp;neural&nbsp;network.</tt></dd></dl>
 
 <dl><dt><a name="NeuralNetwork-fireNetwork"><strong>fireNetwork</strong></a>(self, inputList)</dt><dd><tt>Fire&nbsp;the&nbsp;network&nbsp;given&nbsp;a&nbsp;list&nbsp;of&nbsp;inputs<br>
 &nbsp;<br>
 The&nbsp;length&nbsp;of&nbsp;the&nbsp;input&nbsp;list&nbsp;must&nbsp;equal&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;input&nbsp;layer.<br>
 :return:&nbsp;An&nbsp;output&nbsp;list&nbsp;of&nbsp;the&nbsp;same&nbsp;length&nbsp;as&nbsp;the&nbsp;input&nbsp;list.</tt></dd></dl>
+
+<dl><dt><a name="NeuralNetwork-getSynapses"><strong>getSynapses</strong></a>(self)</dt><dd><tt>Returns&nbsp;a&nbsp;concatenation&nbsp;of&nbsp;all&nbsp;the&nbsp;synapses</tt></dd></dl>
 
 <dl><dt><a name="NeuralNetwork-printSynapses"><strong>printSynapses</strong></a>(self)</dt><dd><tt>Print&nbsp;the&nbsp;synapses</tt></dd></dl>
 
@@ -89,7 +94,10 @@ The&nbsp;length&nbsp;of&nbsp;the&nbsp;input&nbsp;list&nbsp;must&nbsp;equal&nbsp;
 
 <dl><dt><a name="Synapse-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Converts&nbsp;a&nbsp;synapse&nbsp;to&nbsp;a&nbsp;string&nbsp;for&nbsp;debuging&nbsp;proposes.</tt></dd></dl>
 
-<dl><dt><a name="Synapse-fire"><strong>fire</strong></a>(self)</dt><dd><tt>Fire&nbsp;the&nbsp;synapse&nbsp;by&nbsp;pulling&nbsp;the&nbsp;value&nbsp;from&nbsp;the&nbsp;left&nbsp;neuron,&nbsp;multiplying&nbsp;by&nbsp;the&nbsp;weight,&nbsp;then&nbsp;adding&nbsp;it&nbsp;to&nbsp;the&nbsp;value&nbsp;of&nbsp;the&nbsp;right&nbsp;neuron.</tt></dd></dl>
+<dl><dt><a name="Synapse-fire"><strong>fire</strong></a>(self)</dt><dd><tt>Fire&nbsp;the&nbsp;synapse&nbsp;by&nbsp;pulling&nbsp;the&nbsp;value&nbsp;from&nbsp;the&nbsp;left&nbsp;neuron,&nbsp;multiplying&nbsp;by&nbsp;the&nbsp;weight,<br>
+then&nbsp;adding&nbsp;it&nbsp;to&nbsp;the&nbsp;value&nbsp;of&nbsp;the&nbsp;right&nbsp;neuron.</tt></dd></dl>
+
+<dl><dt><a name="Synapse-mutate"><strong>mutate</strong></a>(self, intensity<font color="#909090">=0.5</font>)</dt><dd><tt>Randomly&nbsp;adjusts&nbsp;the&nbsp;weight&nbsp;of&nbsp;the&nbsp;synapse</tt></dd></dl>
 
 </td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">

@@ -3,7 +3,6 @@ Module to create neural network
 """
 import random
 import math
-import numpy
 import copy
 e = 2.718
 
@@ -52,7 +51,7 @@ class Synapse:
         
     def fire(self):
         """
-        Fire the synapse by pulling the value from the left neuron, multiplying by the weight, 
+        Fire the synapse by pulling the value from the left neuron, multiplying by the weight,
         then adding it to the value of the right neuron.
         """
         self.rightNeuron.value += (self.leftNeuron.value * self.weight) + self.rightNeuron.bias
@@ -63,7 +62,7 @@ class Synapse:
         """
         return str(self.weight)
     
-    def mutate(self, intensity = 0.5):
+    def mutate(self, intensity=0.5):
         """
         Randomly adjusts the weight of the synapse
         """
@@ -81,7 +80,7 @@ class NeuralNetwork:
         First argument is the number of input nodes
         Second argument is the number of output nodes
         
-        There is always one fully hidden connected layer with the same number of nodes as the 
+        There is always one fully hidden connected layer with the same number of nodes as the
         input layer.
         """
         self.fitness = 0
@@ -171,3 +170,4 @@ class NeuralNetwork:
         Create a deep copy of the neural network.
         """
         return copy.deepcopy(self)
+    

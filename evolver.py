@@ -24,7 +24,9 @@ class Evolver:
     Class that handles mutations, keeping track of the fitness,
     and creating new populations.
     """
-    def __init__(self, api, populationSize = 10, mutationRate = 0.1, maxGenerations = 0, showResults = True, keepBestProportion = 0.1, keepRandomProportion = 0.1):
+    def __init__(self, api, populationSize=10, mutationRate=0.1, \
+        maxGenerations=0, showResults=True, keepBestProportion=0.1, \
+        keepRandomProportion=0.1):
         """
         initalizes an evolver
         """
@@ -80,7 +82,9 @@ class Evolver:
         print("The AI began with a fitness of ", self.initialFitness)
         print("It ran for a total of ", self.generationCount, " generations.")
         print("It's best fitness was ", self.bestFitness)
-        print("This represents an average improvement of ", float(self.bestFitness - self.initialFitness) / (self.generationCount - 1), " points per generation.")
+        print("This represents an average improvement of ", \
+        float(self.bestFitness - self.initialFitness) / (self.generationCount - 1), \
+        " points per generation.")
         print("The evolver ran for a total of ", time.time() - self.startTime, " seconds")
         return True
     
@@ -92,7 +96,7 @@ class Evolver:
         print("The most fit network of this generation had a fitness of ", highestFitness)
         return True
     
-    def generateNewPopulation(self, keepBestProportion = 0.1, keepRandomProportion = 0.1):
+    def generateNewPopulation(self, keepBestProportion=0.1, keepRandomProportion=0.1):
         """
         Generates a new population based off most fit network
         keepBestProportion refers to the proportion of the most fit members
@@ -106,11 +110,11 @@ class Evolver:
         newPopulation = []
         
         #Sort the network from most fit to least fit
-        self.population.sort(key = lambda x: x.fitness, reverse = True)
+        self.population.sort(key=lambda x: x.fitness, reverse=True)
         numBestToKeep = int(keepBestProportion * self.populationSize)
         numRandomToKeep = int(keepRandomProportion * self.populationSize)
         numToKeep = numBestToKeep + numRandomToKeep
-        numOffspringPerNetwork = int( (self.populationSize / numToKeep) - 1 )
+        numOffspringPerNetwork = int((self.populationSize / numToKeep) - 1)
         
         networksToKeep.extend(self.population[0:numBestToKeep]) #Immediately append the "keepers"
         randomKeepers = random.sample(self.population[numBestToKeep:], numRandomToKeep)
@@ -126,7 +130,7 @@ class Evolver:
         else:
             self.bestFitness = max(self.bestFitness, mostFitNetwork.fitness)
             
-        if self.maxGenerations!=0 and self.generationCount >= self.maxGenerations:
+        if self.maxGenerations !=0 and self.generationCount >= self.maxGenerations:
             #self.api.removeFrameListener(self.playGame)
             #self.api.setPaused(True)
             if self.showResults:
@@ -206,10 +210,12 @@ class Evolver:
         """
         Increments the current network to the next one.
         """
-        print("Network #", self.currentNetworkIndex, ", Incrementing network, score was ", self.currentNetwork.fitness)
+        print("Network #", self.currentNetworkIndex, \
+        ", Incrementing network, score was ", self.currentNetwork.fitness)
         self.spamStart = True
         if self.currentNetworkIndex >= self.populationSize - 1:
-            raise ValueError("You cannot increment any further - you're on the last network in the population!")
+            raise ValueError("You cannot increment any further - you're on the \
+            last network in the population!")
         self.currentNetworkIndex += 1
         self.currentNetwork = self.population[self.currentNetworkIndex]
     
@@ -224,13 +230,15 @@ class Evolver:
         (Horrible.)
         """
         if self.lastLifeCount == 1 and value==0: #Out of lives.
-            if self.currentNetworkIndex >= self.populationSize - 1: #The last member of this generation died.
+            #The last member of this generation died.
+            if self.currentNetworkIndex >= self.populationSize - 1:
                 print("Last member of population has died.")
-                self.generateNewPopulation(self.keepBestProportion, self.keepRandomProportion)
+                self.generateNewPopulation(self.keepBestProportion, \
+                self.keepRandomProportion)
                 self.spamStart = True
             else: #The member died but wasn't the last member of the population.
                 self.incrementNetwork()
-        if self.lastLifeCount == 0 and value==3:
+        if self.lastLifeCount == 0 and value == 3:
             self.spamStart = False
         self.lastLifeCount = value
         return -1 #Return no change to value for the emulator API.

@@ -24,7 +24,7 @@ class Evolver:
     Class that handles mutations, keeping track of the fitness,
     and creating new populations.
     """
-    def __init__(self, api, populationSize = 20, mutationRate = 0.1, maxGenerations = 0, showResults = True):
+    def __init__(self, api, populationSize = 10, mutationRate = 0.1, maxGenerations = 0, showResults = True, keepBestProportion = 0.1, keepRandomProportion = 0.1):
         """
         initalizes an evolver
         """
@@ -32,7 +32,7 @@ class Evolver:
         self.api = api
         self.originalMutationRate = mutationRate
         self.mutationRate = mutationRate
-        self.spamStart = False
+        self.spamStart = True
         self.spamDirection = False
         self.generationCount = 1
         self.maxGenerations = maxGenerations
@@ -46,6 +46,9 @@ class Evolver:
         self.bestFitness = 0
         self.startTime = time.time()
         self.showResults = showResults
+        self.keepBestProportion = keepBestProportion
+        self.keepRandomProportion = keepRandomProportion
+        self.frameCount = 0
     
     def getCurrentFitness(self):
         """
@@ -58,6 +61,7 @@ class Evolver:
             fitness = fitness + ((self.api.peekCPU(address)) * digit)
             digit *= 10
         return fitness * 10
+    
     def mutateNetwork(self, network):
         """
         Mutates the weights of the synapses in the network
@@ -75,6 +79,12 @@ class Evolver:
         print("It's best fitness was ", self.bestFitness)
         print("This represents an average improvement of ", float(self.bestFitness - self.initialFitness) / (self.generationCount - 1), " points per generation.")
         print("The evolver ran for a total of ", time.time() - self.startTime, " seconds")
+        return True
+    
+    def printGenerationResults(self, highestFitness):
+        print("Generation results for Generation #", self.generationCount)
+        print("The most fit network of this generation had a fitness of ", highestFitness)
+        return True
     
     def generateNewPopulation(self, keepBestProportion = 0.1, keepRandomProportion = 0.1):
         """
@@ -83,7 +93,6 @@ class Evolver:
         of the population that should be kept. keepRandomProportion refers
         to the proportion of other random members of the population that
         should be kept. Numbers are rounded down when not whole.
-        
         """
 
         mostFitNetwork = self.population[0]
@@ -101,8 +110,9 @@ class Evolver:
         randomKeepers = random.sample(self.population[numBestToKeep:], numRandomToKeep)
         networksToKeep.extend(randomKeepers)
         mostFitNetwork = self.population[0]
+        highestFitness = mostFitNetwork.fitness
+        self.printGenerationResults(highestFitness)
         #Generates 9 new mutants from the most fit network     
-        print("The most fit network in this generation had a fitness of: ", mostFitNetwork.fitness)
         
         if self.generationCount == 1:
             self.initialFitness = mostFitNetwork.fitness
@@ -111,12 +121,12 @@ class Evolver:
             self.bestFitness = max(self.bestFitness, mostFitNetwork.fitness)
             
         if self.maxGenerations!=0 and self.generationCount >= self.maxGenerations:
-            self.api.removeFrameListener(self.playGame)
-            self.api.setPaused(True)
+            #self.api.removeFrameListener(self.playGame)
+            #self.api.setPaused(True)
             if self.showResults:
                 self.printResultsReport()
+                mostFitNetwork.printSynapses()
                 return
-        print("Generating a new population: Generation # ", self.generationCount)
         
         #Generate the offspring from the networks we've selected to keep.
         for network in networksToKeep:
@@ -178,6 +188,7 @@ class Evolver:
         elif output[3] >= m:
             self.writeGamepad(GAMEPAD_RIGHT, True)
         self.currentNetwork.fitness = self.getCurrentFitness()
+        self.frameCount+=1
     
     def incrementNetwork(self):
         """
@@ -203,7 +214,7 @@ class Evolver:
         if self.lastLifeCount == 1 and value==0: #Out of lives.
             if self.currentNetworkIndex >= self.populationSize - 1: #The last member of this generation died.
                 print("Last member of population has died.")
-                self.generateNewPopulation()
+                self.generateNewPopulation(self.keepBestProportion, self.keepRandomProportion)
                 self.spamStart = True
             else: #The member died but wasn't the last member of the population.
                 self.incrementNetwork()
